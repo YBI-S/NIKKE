@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StudioStep — Chaussures (Exemple)</title>
+  <meta name="description" content="StudioStep - boutique de chaussures fictive (exemple pédagogique)" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#ff6b35; --muted:#9aa4b2; --glass: rgba(255,255,255,0.04);
+      --maxw:1100px; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#071029 0%, #0b1220 100%);color:#e6eef6;line-height:1.4}
+    .container{max-width:var(--maxw);margin:28px auto;padding:0 20px}
+
+    /* Header */
+    header{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#ff6b35,#ff9c6b);display:flex;align-items:center;justify-content:center;font-weight:800;color:#081024}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600}
+    .cta{background:var(--accent);padding:10px 14px;border-radius:10px;color:#081024;text-decoration:none;font-weight:700}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:18px}
+    .hero-left h1{font-size:34px;margin:0 0 8px}
+    .hero-left p{color:var(--muted);margin:0 0 18px}
+    .search{display:flex;gap:8px}
+    .search input{flex:1;padding:12px;border-radius:10px;border:0;background:var(--glass);color:inherit}
+    .search button{padding:12px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,#ff6b35,#ff8a5a);color:#081024;font-weight:700}
+
+    .hero-right{background:linear-gradient(180deg, rgba(255,107,53,0.08), transparent);padding:18px;border-radius:12px}
+    .hero-product{display:flex;gap:12px;align-items:center}
+    .shoe-illustration{width:160px;height:120px;border-radius:12px;background:linear-gradient(135deg,#ffd4c4, #ffc49b);display:flex;align-items:center;justify-content:center;color:#111;font-weight:700}
+    .price{font-weight:800;font-size:20px}
+
+    /* Grid */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:10px}
+    .thumb{height:160px;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#111}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease}
+    .product-title{margin:6px 0 0;font-weight:700}
+    .product-meta{color:var(--muted);font-size:13px}
+    .card .row{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+    .buy, .btn {background:var(--accent);padding:8px 12px;border-radius:8px;color:#081024;font-weight:700;text-decoration:none;border:0;cursor:pointer}
+
+    /* Footer */
+    footer{margin-top:36px;padding:22px;border-top:1px solid rgba(255,255,255,0.03);color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:560px){
+      .grid{grid-template-columns:1fr}
+      nav{display:none}
+      .brand .logo{width:42px;height:42px}
+    }
+
+    /* badge */
+    .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-size:13px;color:var(--muted)}
+
+    /* hover */
+    .card:hover .thumb img{transform:scale(1.03)}
+
+    /* Cart & Modal */
+    .cart-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+    .cart-count{background:#ff6b35;color:#081024;padding:4px 8px;border-radius:999px;font-weight:700;margin-left:8px}
+
+    .overlay{position:fixed;inset:0;background:rgba(2,6,12,0.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+    .modal{max-width:520px;width:100%;background:linear-gradient(180deg,#071029,#0b1220);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 40px rgba(2,6,12,0.6)}
+    .modal h3{margin:0 0 8px}
+    .form-row{display:flex;gap:8px;margin-bottom:8px}
+    .form-row input, .modal input, .modal select {flex:1;padding:10px;border-radius:8px;border:0;background:rgba(255,255,255,0.03);color:inherit}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* small note */
+    .notice{background:rgba(255,255,255,0.03);padding:10px;border-radius:10px;color:var(--muted);font-size:13px;margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <header>
+      <div class="brand">
+        <div class="logo">SS</div>
+        <div>
+          <div style="font-weight:800">StudioStep</div>
+          <div class="badge">Chaussures • Exemple</div>
+        </div>
+      </div>
+
+      <nav aria-label="Navigation principale">
+        <a href="#">Nouveautés</a>
+        <a href="#">Hommes</a>
+        <a href="#">Femmes</a>
+        <a href="#">Enfants</a>
+        <button class="cta" id="view-collection">Voir la collection</button>
+      </nav>
+    </header>
+
+    <!-- Avertissement pédagogique -->
+    <div class="notice" role="note" aria-live="polite">
+      ⚠️ <strong>Simulation pédagogique :</strong> Ce site est un exemple. Le formulaire de paiement ci‑dessous est fictif — aucune donnée bancaire n'est transmise ou stockée.
+    </div>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-left">
+          <h1 id="hero-title">Confort. Style. Pour tous les jours.</h1>
+          <p class="muted">Sélection de baskets & chaussures — design épuré, confort garanti. <strong>Exemple pédagogique</strong>.</p>
+
+          <div class="search" role="search" aria-label="Recherche produits">
+            <input aria-label="Recherche" placeholder="Rechercher : running, sneakers, cuir..." />
+            <button>Rechercher</button>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:14px">
+            <div class="badge">Livraison 48h</div>
+            <div class="badge">Retours gratuits</div>
+            <div class="badge">Paiement sécurisé</div>
+          </div>
+        </div>
+
+        <aside class="hero-right" aria-label="Produit présenté">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="color:var(--muted);font-size:13px">Édition limitée</div>
+              <div class="price">129€</div>
+            </div>
+            <div style="text-align:right;color:var(--muted);font-size:13px">Note 4.8 ★</div>
+          </div>
+
+          <div class="hero-product" style="margin-top:14px">
+            <div class="shoe-illustration" aria-hidden="true">Sneaker</div>
+            <div>
+              <div style="font-weight:800">Studio Runner</div>
+              <div style="color:var(--muted);font-size:13px;margin-top:8px">Cuir synthétique, semelle légère, conçue pour la ville.</div>
+              <div style="margin-top:12px"><button class="buy" data-name="Studio Runner" data-price="129">Ajouter au panier</button></div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Produits -->
+      <section class="grid" aria-label="Produits populaires" id="products">
+        <!-- Card 1 -->
+        <article class="card" data-sku="RUN-01">
+          <div class="thumb">
+            <img src="https://images.prodirectsport.com/ProductImages/Main/272782_Main_Thumb_1223050.jpg" alt="Runner Minimal - blanc" loading="lazy">
+          </div>
+          <div class="product-title">Runner Minimal</div>
+          <div class="product-meta">Couleur: Blanc • Tailles 38–46</div>
+          <div class="row">
+            <div style="font-weight:800">99€</div>
+            <div>
+              <button class="buy" data-name="Runner Minimal" data-price="99">Ajouter au panier</button>
+              <button class="cart-btn" data-view-cart>Panier</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card" data-sku="CITY-02">
+          <div class="thumb">
+            <img src="https://www.foot-inside.fr/wp-content/uploads/2019/05/chaussure-foot-gabon-panther-aubameyang.jpg" alt="Chelsea Urbain - cuir" loading="lazy">
+          </div>
+          <div class="product-title">Chelsea Urbain</div>
+          <div class="product-meta">Cuir premium • Tailles 39–45</div>
+          <div class="row">
+            <div style="font-weight:800">149€</div>
+            <div>
+              <button class="buy" data-name="Chelsea Urbain" data-price="149">Ajouter au panier</button>
+              <button class="cart-btn" data-view-cart>Panier</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card" data-sku="KID-03">
+          <div class="thumb">
+            <img src="https://run-ix.com/wp-content/uploads/2024/11/nike-EK@42k_agency-10-2048x1365.jpg" alt="Mini Step - enfant" loading="lazy">
+          </div>
+          <div class="product-title">Mini Step</div>
+          <div class="product-meta">Résistante • Tailles 24–34</div>
+          <div class="row">
+            <div style="font-weight:800">49€</div>
+            <div>
+              <button class="buy" data-name="Mini Step" data-price="49">Ajouter au panier</button>
+              <button class="cart-btn" data-view-cart>Panier</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="card" data-sku="TRAIL-04">
+          <div class="thumb">
+            <img src="https://cdn.plutosport.com/a/ProductMedia/Nike/P.NIKE.SNE.6916/Nike-Initiator-Sneakers-Dames_4-2405221147.jpg?profile=product_page_image_medium&33" alt="Trail Comfort - outdoor" loading="lazy">
+          </div>
+          <div class="product-title">Trail Comfort</div>
+          <div class="product-meta">Adhérence • Tailles 40–47</div>
+          <div class="row">
+            <div style="font-weight:800">119€</div>
+            <div>
+              <button class="buy" data-name="Trail Comfort" data-price="119">Ajouter au panier</button>
+              <button class="cart-btn" data-view-cart>Panier</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="card" data-sku="FORM-05">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=640&q=60" alt="Forme Élégante - ville" loading="lazy">
+          </div>
+          <div class="product-title">Forme Élégante</div>
+          <div class="product-meta">Semelle fine • Tailles 36–42</div>
+          <div class="row">
+            <div style="font-weight:800">89€</div>
+            <div>
+              <button class="buy" data-name="Forme Élégante" data-price="89">Ajouter au panier</button>
+              <button class="cart-btn" data-view-cart>Panier</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="card" data-sku="SPRINT-06">
+          <div class="thumb">
+            <img src="https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/e1dee49d-7f73-4433-9baa-f9e556f39a8c/NIKE+SHOX+R4.png" alt="Sprint X - sport" loading="lazy">
+          </div>
+          <div class="product-title">Sprint X</div>
+          <div class="product-meta">Respirant • Tailles 38–46</div>
+          <div class="row">
+            <div style="font-weight:800">109€</div>
+            <div>
+              <button class="buy" data-name="Sprint X" data-price="109">Ajouter au panier</button>
+              <button class="cart-btn" data-view-cart>Panier</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+    </main>
+
+    <footer>
+      <div>© StudioStep — site fictif pour exemple • <strong>exercice pédagogique</strong></div>
+      <div style="display:flex;gap:12px">
+        <div class="badge">FAQ</div>
+        <div class="badge">Contact</div>
+        <div class="badge">Mentions légales</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Overlay modal : panier / paiement (simulation) -->
+  <div class="overlay" id="overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal" role="document" aria-labelledby="modal-title">
+      <h3 id="modal-title">Panier — Simulation</h3>
+      <div id="cart-contents" class="muted">Aucun produit dans le panier.</div>
+
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="btn" id="checkout-btn" disabled>Passer au paiement</button>
+        <button class="cart-btn" id="close-modal">Fermer</button>
+      </div>
+
+      <div id="checkout-form-wrap" style="margin-top:12px;display:none">
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0">
+        <h4>Paiement (simulation)</h4>
+        <p class="muted">Ce formulaire est fictif — les informations ne sont pas envoyées ni stockées.</p>
+
+        <form id="checkout-form" onsubmit="return false;" autocomplete="off" novalidate>
+          <div style="margin-top:8px">
+            <label class="muted" for="card-name">Nom affiché sur la carte</label>
+            <input id="card-name" type="text" placeholder="Jean Dupont" required>
+          </div>
+
+          <div class="form-row" style="margin-top:8px">
+            <div style="flex:2">
+              <label class="muted" for="card-number">Numéro de carte</label>
+              <input id="card-number" type="text" inputmode="numeric" placeholder="1234 5678 9012 3456" required>
+            </div>
+            <div style="flex:1">
+              <label class="muted" for="card-exp">MM/AA</label>
+              <input id="card-exp" type="text" placeholder="08/27" required>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top:8px">
+            <div>
+              <label class="muted" for="card-cvc">CVC</label>
+              <input id="card-cvc" type="text" placeholder="123" required>
+            </div>
+            <div style="flex:1">
+              <label class="muted" for="billing-post">Code postal</label>
+              <input id="billing-post" type="text" placeholder="75001" required>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button id="pay-btn" class="btn" type="button">Payer (simulation)</button>
+            <button id="cancel-pay" class="cart-btn" type="button">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // === Simple cart logic (client-side only, no stockage, pas d'envoi) ===
+      const cart = []; // in-memory only, cleared on page reload
+      const overlay = document.getElementById('overlay');
+      const cartContents = document.getElementById('cart-contents');
+      const checkoutBtn = document.getElementById('checkout-btn');
+      const checkoutWrap = document.getElementById('checkout-form-wrap');
+      const closeModalBtn = document.getElementById('close-modal');
+      const viewCollectionBtn = document.getElementById('view-collection');
+      const payBtn = document.getElementById('pay-btn');
+      const cancelPayBtn = document.getElementById('cancel-pay');
+
+      // helpers
+      const formatPrice = (value) => value + '€';
+
+      function renderCart() {
+        if (cart.length === 0) {
+          cartContents.textContent = 'Aucun produit dans le panier.';
+          checkoutBtn.disabled = true;
+          checkoutWrap.style.display = 'none';
+          return;
+        }
+
+        let total = 0;
+        const list = document.createElement('div');
+        list.style.display = 'flex';
+        list.style.flexDirection = 'column';
+        list.style.gap = '8px';
+
+        cart.forEach((item, idx) => {
+          total += item.price * item.qty;
+          const row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.justifyContent = 'space-between';
+          row.style.alignItems = 'center';
+
+          const left = document.createElement('div');
+          left.textContent = `${item.name} (x${item.qty})`;
+          left.className = 'muted';
+
+          const right = document.createElement('div');
+          right.style.display = 'flex';
+          right.style.gap = '8px';
+          right.style.alignItems = 'center';
+
+          const price = document.createElement('div');
+          price.style.fontWeight = '800';
+          price.textContent = formatPrice(item.price * item.qty);
+
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'cart-btn';
+          removeBtn.textContent = 'Retirer';
+          removeBtn.onclick = () => {
+            cart.splice(idx, 1);
+            renderCart();
+          };
+
+          right.appendChild(price);
+          right.appendChild(removeBtn);
+
+          row.appendChild(left);
+          row.appendChild(right);
+          list.appendChild(row);
+        });
+
+        const totalRow = document.createElement('div');
+        totalRow.style.display = 'flex';
+        totalRow.style.justifyContent = 'space-between';
+        totalRow.style.marginTop = '10px';
+        totalRow.style.paddingTop = '8px';
+        totalRow.style.borderTop = '1px solid rgba(255,255,255,0.04)';
+
+        const totLabel = document.createElement('div');
+        totLabel.textContent = 'Total';
+        totLabel.style.fontWeight = '800';
+
+        const totValue = document.createElement('div');
+        totValue.textContent = formatPrice(total);
+
+        totalRow.appendChild(totLabel);
+        totalRow.appendChild(totValue);
+
+        // clear and append
+        cartContents.innerHTML = '';
+        cartContents.appendChild(list);
+        cartContents.appendChild(totalRow);
+
+        checkoutBtn.disabled = false;
+      }
+
+      function openModal() {
+        overlay.style.display = 'flex';
+        overlay.setAttribute('aria-hidden', 'false');
+        renderCart();
+      }
+
+      function closeModal() {
+        overlay.style.display = 'none';
+        overlay.setAttribute('aria-hidden', 'true');
+        // hide checkout area
+        checkoutWrap.style.display = 'none';
+      }
+
+      // Add to cart handlers
+      document.querySelectorAll('.buy').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const name = btn.dataset.name || btn.getAttribute('data-name');
+          const price = Number(btn.dataset.price || btn.getAttribute('data-price') || 0);
+          if (!name) return;
+          // If item exists, increase qty
+          const existing = cart.find(i => i.name === name && i.price === price);
+          if (existing) {
+            existing.qty += 1;
+          } else {
+            cart.push({ name, price, qty: 1 });
+          }
+
+          // small visual feedback
+          const prev = btn.textContent;
+          btn.textContent = 'Ajouté ✓';
+          setTimeout(() => btn.textContent = prev, 900);
+        });
+      });
+
+      // open cart (buttons)
+      document.querySelectorAll('[data-view-cart]').forEach(b => {
+        b.addEventListener('click', openModal);
+      });
+
+      // header collection button shows modal as demo
+      viewCollectionBtn.addEventListener('click', () => {
+        // scroll to products for demo
+        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      closeModalBtn.addEventListener('click', closeModal);
+
+      // checkout flow
+      checkoutBtn.addEventListener('click', () => {
+        // show checkout form in the modal
+        checkoutWrap.style.display = 'block';
+        // put focus in first field
+        const first = document.getElementById('card-name');
+        if (first) first.focus();
+      });
+
+      // Pay (simulation)
+      payBtn.addEventListener('click', () => {
+        // simple client-side validation (only for demo)
+        const name = document.getElementById('card-name').value.trim();
+        const number = document.getElementById('card-number').value.trim();
+        const exp = document.getElementById('card-exp').value.trim();
+        const cvc = document.getElementById('card-cvc').value.trim();
+        const post = document.getElementById('billing-post').value.trim();
+
+        if (!name || !number || !exp || !cvc || !post) {
+          alert('Veuillez remplir tous les champs (simulation).');
+          return;
+        }
+
+        // IMPORTANT: This is a simulation only. We do NOT send or store any bank data.
+        // Clear inputs immediately to avoid leaving data in the page.
+        document.getElementById('checkout-form').reset();
+
+        // Show simulated success message
+        cartContents.innerHTML = '<div style="color:#b7f7d2;font-weight:800">Paiement simulé — commande enregistrée (exemple pédagogique).</div>';
+        // Clear cart
+        cart.length = 0;
+        checkoutBtn.disabled = true;
+        checkoutWrap.style.display = 'none';
+
+        // close modal after short delay
+        setTimeout(closeModal, 1500);
+      });
+
+      cancelPayBtn.addEventListener('click', () => {
+        // just hide the checkout area
+        checkoutWrap.style.display = 'none';
+      });
+
+      // overlay click to close (but not when clicking inside modal)
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+      });
+
+      // keyboard: escape to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.style.display === 'flex') {
+          closeModal();
+        }
+      });
+
+      // initial render
+      renderCart();
+
+      // Accessibility: trap focus in modal when opened (basic)
+      let lastFocused = null;
+      const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+      overlay.addEventListener('transitionstart', () => {});
+      overlay.addEventListener('click', () => {});
+
+      // When modal opens, remember previously focused element; when closes, restore.
+      const observer = new MutationObserver(() => {
+        if (overlay.style.display === 'flex') {
+          lastFocused = document.activeElement;
+          const modal = overlay.querySelector('.modal');
+          const focusable = modal.querySelectorAll(focusableSelector);
+          if (focusable.length) focusable[0].focus();
+        } else {
+          if (lastFocused) lastFocused.focus();
+        }
+      });
+      observer.observe(overlay, { attributes: true, attributeFilter: ['style'] });
+
+      // For demo: add keyboard shortcuts (P = open panier)
+      document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'p' && !e.metaKey && !e.ctrlKey) {
+          openModal();
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>
