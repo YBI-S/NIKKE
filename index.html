@@ -1,237 +1,192 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Nikke — Chaussures (Exemple)</title>
-  <meta name="description" content=" NIKKE - boutique de chaussures fictive (exemple pédagogique)" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style> 
-    /* --- Ton CSS existant --- */
-    :root{
-      --bg:#0f1724; --card:#0b1220; --accent:#ff6b35; --muted:#9aa4b2; --glass: rgba(255,255,255,0.04);
-      --maxw:1100px; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:linear-gradient(180deg,#071029 0%, #0b1220 100%);color:#e6eef6;line-height:1.4}
-    .container{max-width:var(--maxw);margin:28px auto;padding:0 20px}
-    header{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#ff6b35,#ff9c6b);display:flex;align-items:center;justify-content:center;font-weight:800;color:#081024}
-    nav{display:flex;gap:18px;align-items:center}
-    nav a{color:var(--muted);text-decoration:none;font-weight:600}
-    .cta{background:var(--accent);padding:10px 14px;border-radius:10px;color:#081024;text-decoration:none;font-weight:700}
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:18px}
-    .hero-left h1{font-size:34px;margin:0 0 8px}
-    .hero-left p{color:var(--muted);margin:0 0 18px}
-    .search{display:flex;gap:8px}
-    .search input{flex:1;padding:12px;border-radius:10px;border:0;background:var(--glass);color:inherit}
-    .search button{padding:12px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,#ff6b35,#ff8a5a);color:#081024;font-weight:700}
-    .hero-right{background:linear-gradient(180deg, rgba(255,107,53,0.08), transparent);padding:18px;border-radius:12px}
-    .hero-product{display:flex;gap:12px;align-items:center}
-    .shoe-illustration{width:160px;height:120px;border-radius:12px;background:linear-gradient(135deg,#ffd4c4, #ffc49b);display:flex;align-items:center;justify-content:center;color:#111;font-weight:700}
-    .price{font-weight:800;font-size:20px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:10px}
-    .thumb{height:160px;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#111}
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease}
-    .product-title{margin:6px 0 0;font-weight:700}
-    .product-meta{color:var(--muted);font-size:13px}
-    .card .row{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
-    .buy, .btn {background:var(--accent);padding:8px 12px;border-radius:8px;color:#081024;font-weight:700;text-decoration:none;border:0;cursor:pointer}
-    footer{margin-top:36px;padding:22px;border-top:1px solid rgba(255,255,255,0.03);color:var(--muted);display:flex;justify-content:space-between;align-items:center}
-    @media (max-width:900px){.hero{grid-template-columns:1fr;}.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:560px){.grid{grid-template-columns:1fr} nav{display:none} .brand .logo{width:42px;height:42px}}
-    .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-size:13px;color:var(--muted)}
-    .card:hover .thumb img{transform:scale(1.03)}
-    .cart-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
-    .cart-count{background:#ff6b35;color:#081024;padding:4px 8px;border-radius:999px;font-weight:700;margin-left:8px}
-    .overlay{position:fixed;inset:0;background:rgba(2,6,12,0.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
-    .modal{max-width:520px;width:100%;background:linear-gradient(180deg,#071029,#0b1220);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 40px rgba(2,6,12,0.6)}
-    .modal h3{margin:0 0 8px}
-    .form-row{display:flex;gap:8px;margin-bottom:8px}
-    .form-row input, .modal input, .modal select {flex:1;padding:10px;border-radius:8px;border:0;background:rgba(255,255,255,0.03);color:inherit}
-    .muted{color:var(--muted);font-size:13px}
-    .notice{background:rgba(255,255,255,0.03);padding:10px;border-radius:10px;color:var(--muted);font-size:13px;margin-top:12px}
-  </style>
-</head>
-<body>
-<div class="container" role="main">
-  <!-- --- Ton HTML existant --- -->
-  <header>
-    <div class="brand"><div class="logo">SS</div><div><div style="font-weight:800">StudioStep</div><div class="badge">Chaussures • Exemple</div></div></div>
-    <nav aria-label="Navigation principale"><a href="#">Nouveautés</a><a href="#">Hommes</a><a href="#">Femmes</a><a href="#">Enfants</a><button class="cta" id="view-collection">Voir la collection</button></nav>
-  </header>
-  <div class="notice" role="note" aria-live="polite"><strong>Simulation pédagogique :</strong> Ce site est un exemple. Le formulaire de paiement ci‑dessous est fictif — aucune donnée bancaire n'est transmise ou stockée.</div>
-
-  <main>
-    <!-- ... hero, produits, etc. inchangés ... -->
-    <section class="grid" aria-label="Produits populaires" id="products">
-      <!-- ... tes cards produits ... -->
-    </section>
-  </main>
-
-  <footer>
-    <div>© StudioStep — site fictif pour exemple • <strong>exercice pédagogique</strong></div>
-    <div style="display:flex;gap:12px"><div class="badge">FAQ</div><div class="badge">Contact</div><div class="badge">Mentions légales</div></div>
-  </footer>
-</div>
-
-<!-- Overlay modal : panier / paiement -->
-<div class="overlay" id="overlay" aria-hidden="true" role="dialog" aria-modal="true">
-  <div class="modal" role="document" aria-labelledby="modal-title">
-    <h3 id="modal-title">Panier — Simulation</h3>
-    <div id="cart-contents" class="muted">Aucun produit dans le panier.</div>
-    <div style="display:flex;gap:8px;margin-top:12px;">
-      <button class="btn" id="checkout-btn" disabled>Passer au paiement</button>
-      <button class="cart-btn" id="close-modal">Fermer</button>
-    </div>
-    <div id="checkout-form-wrap" style="margin-top:12px;display:none">
-      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0">
-      <h4>Paiement (simulation)</h4>
-      <p class="muted">Ce formulaire est fictif — les informations ne sont pas envoyées ni stockées.</p>
-
-      <form id="checkout-form" onsubmit="return false;" autocomplete="off" novalidate>
-        <div style="margin-top:8px">
-          <label class="muted" for="card-name">Nom affiché sur la carte</label>
-          <input id="card-name" type="text" placeholder="Jean Dupont" required>
-        </div>
-        <div class="form-row" style="margin-top:8px">
-          <div style="flex:2">
-            <label class="muted" for="card-number">Numéro de carte</label>
-            <input id="card-number" type="text" inputmode="numeric" placeholder="1234 5678 9012 3456" required>
-          </div>
-          <div style="flex:1">
-            <label class="muted" for="card-exp">MM/AA</label>
-            <input id="card-exp" type="text" placeholder="08/27" required>
-          </div>
-        </div>
-        <div class="form-row" style="margin-top:8px">
-          <div>
-            <label class="muted" for="card-cvc">CVC</label>
-            <input id="card-cvc" type="text" placeholder="123" required>
-          </div>
-          <div style="flex:1">
-            <label class="muted" for="billing-post">Code postal</label>
-            <input id="billing-post" type="text" placeholder="75001" required>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <button id="pay-btn" class="btn" type="button">Payer</button>
-          <button id="cancel-pay" class="cart-btn" type="button">Annuler</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- Firebase SDK + Script -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.24.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.24.0/firebase-firestore.js";
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDrYJYazYIM0kxr-u1q4p7_0X3u7v9cspY",
-    authDomain: "site-74db3.firebaseapp.com",
-    projectId: "site-74db3",
-    storageBucket: "site-74db3.firebasestorage.app",
-    messagingSenderId: "362656258890",
-    appId: "1:362656258890:web:e169059d20839efb373fb3"
-  };
+  // ⚠️ Remplace ces valeurs par les tiennes
+  const supabaseUrl = 'https://ezugesmyliadzcsrumgb.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6dWdlc215bGlhZHpjc3J1bWdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM3Njc0NzYsImV4cCI6MjA3OTM0MzQ3Nn0.f-Pk8gShDLwZm_WsR-CtAPAiEOBYUB7b3p4quH1YaCY';
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  // === Fonction pour enregistrer la commande sur Supabase ===
+  async function saveOrder(name, email, cart) {
+    const { data, error } = await supabase
+      .from('orders')
+      .insert([{ name, email, cart }]);
+    
+    if (error) {
+      console.error(error);
+      alert('Erreur lors de l’enregistrement.');
+    } else {
+      alert('Commande enregistrée !');
+    }
+  }
 
-  (function () {
-    const cart = [];
-    const overlay = document.getElementById('overlay');
-    const cartContents = document.getElementById('cart-contents');
-    const checkoutBtn = document.getElementById('checkout-btn');
-    const checkoutWrap = document.getElementById('checkout-form-wrap');
-    const closeModalBtn = document.getElementById('close-modal');
-    const viewCollectionBtn = document.getElementById('view-collection');
-    const payBtn = document.getElementById('pay-btn');
-    const cancelPayBtn = document.getElementById('cancel-pay');
+  // === Logique du panier ===
+  const cart = []; // tableau mémoire pour le panier
+  const overlay = document.getElementById('overlay');
+  const cartContents = document.getElementById('cart-contents');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const checkoutWrap = document.getElementById('checkout-form-wrap');
+  const closeModalBtn = document.getElementById('close-modal');
+  const viewCollectionBtn = document.getElementById('view-collection');
+  const payBtn = document.getElementById('pay-btn');
+  const cancelPayBtn = document.getElementById('cancel-pay');
 
-    const formatPrice = (value) => value + '€';
+  const formatPrice = (value) => value + '€';
 
-    function renderCart() {
-      if (cart.length === 0) {
-        cartContents.textContent = 'Aucun produit dans le panier.';
-        checkoutBtn.disabled = true;
-        checkoutWrap.style.display = 'none';
-        return;
-      }
-      let total = 0;
-      const list = document.createElement('div'); list.style.display='flex'; list.style.flexDirection='column'; list.style.gap='8px';
-      cart.forEach((item, idx) => {
-        total += item.price * item.qty;
-        const row = document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.alignItems='center';
-        const left = document.createElement('div'); left.textContent = `${item.name} (x${item.qty})`; left.className='muted';
-        const right = document.createElement('div'); right.style.display='flex'; right.style.gap='8px'; right.style.alignItems='center';
-        const price = document.createElement('div'); price.style.fontWeight='800'; price.textContent = formatPrice(item.price * item.qty);
-        const removeBtn = document.createElement('button'); removeBtn.className='cart-btn'; removeBtn.textContent='Retirer';
-        removeBtn.onclick = () => { cart.splice(idx,1); renderCart(); };
-        right.append(price, removeBtn); row.append(left,right); list.appendChild(row);
-      });
-      const totalRow = document.createElement('div'); totalRow.style.display='flex'; totalRow.style.justifyContent='space-between'; totalRow.style.marginTop='10px'; totalRow.style.paddingTop='8px'; totalRow.style.borderTop='1px solid rgba(255,255,255,0.04)';
-      const totLabel = document.createElement('div'); totLabel.textContent='Total'; totLabel.style.fontWeight='800';
-      const totValue = document.createElement('div'); totValue.textContent = formatPrice(cart.reduce((acc,item)=>acc+item.price*item.qty,0));
-      totalRow.append(totLabel, totValue);
-      cartContents.innerHTML=''; cartContents.append(list,totalRow); checkoutBtn.disabled=false;
+  function renderCart() {
+    if (cart.length === 0) {
+      cartContents.textContent = 'Aucun produit dans le panier.';
+      checkoutBtn.disabled = true;
+      checkoutWrap.style.display = 'none';
+      return;
     }
 
-    function openModal(){ overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); renderCart();}
-    function closeModal(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); checkoutWrap.style.display='none'; }
+    let total = 0;
+    const list = document.createElement('div');
+    list.style.display = 'flex';
+    list.style.flexDirection = 'column';
+    list.style.gap = '8px';
 
-    document.querySelectorAll('.buy').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        const name = btn.dataset.name; const price = Number(btn.dataset.price);
-        const existing = cart.find(i=>i.name===name && i.price===price);
-        existing ? existing.qty+=1 : cart.push({name,price,qty:1});
-        const prev = btn.textContent; btn.textContent='Ajouté ✓'; setTimeout(()=>btn.textContent=prev,900);
-      });
+    cart.forEach((item, idx) => {
+      total += item.price * item.qty;
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.justifyContent = 'space-between';
+      row.style.alignItems = 'center';
+
+      const left = document.createElement('div');
+      left.textContent = `${item.name} (x${item.qty})`;
+      left.className = 'muted';
+
+      const right = document.createElement('div');
+      right.style.display = 'flex';
+      right.style.gap = '8px';
+      right.style.alignItems = 'center';
+
+      const price = document.createElement('div');
+      price.style.fontWeight = '800';
+      price.textContent = formatPrice(item.price * item.qty);
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'cart-btn';
+      removeBtn.textContent = 'Retirer';
+      removeBtn.onclick = () => {
+        cart.splice(idx, 1);
+        renderCart();
+      };
+
+      right.appendChild(price);
+      right.appendChild(removeBtn);
+      row.appendChild(left);
+      row.appendChild(right);
+      list.appendChild(row);
     });
 
-    document.querySelectorAll('[data-view-cart]').forEach(b=>b.addEventListener('click',openModal));
-    viewCollectionBtn.addEventListener('click',()=>document.getElementById('products').scrollIntoView({behavior:'smooth'}));
-    closeModalBtn.addEventListener('click',closeModal);
-    checkoutBtn.addEventListener('click',()=>{checkoutWrap.style.display='block';document.getElementById('card-name').focus();});
+    const totalRow = document.createElement('div');
+    totalRow.style.display = 'flex';
+    totalRow.style.justifyContent = 'space-between';
+    totalRow.style.marginTop = '10px';
+    totalRow.style.paddingTop = '8px';
+    totalRow.style.borderTop = '1px solid rgba(255,255,255,0.04)';
 
-    // --- Nouvelle fonction pour sauvegarder dans Firebase ---
-    async function saveOrder(cart){
-      try {
-        await addDoc(collection(db,'orders'),{
-          items: cart.map(i=>({name:i.name,price:i.price,qty:i.qty})),
-          total: cart.reduce((acc,i)=>acc+i.price*i.qty,0),
-          createdAt: new Date()
-        });
-        cartContents.innerHTML = '<div style="color:#b7f7d2;font-weight:800">Commande enregistrée ! Merci 🎉</div>';
-        cart.length=0; checkoutBtn.disabled=true; checkoutWrap.style.display='none';
-        setTimeout(closeModal,1500);
-      } catch(err){
-        console.error('Erreur:',err);
-        alert('Erreur serveur, veuillez réessayer.');
-      }
-    }
+    const totLabel = document.createElement('div');
+    totLabel.textContent = 'Total';
+    totLabel.style.fontWeight = '800';
 
-    payBtn.addEventListener('click',()=>{
-      const name = document.getElementById('card-name').value.trim();
-      const number = document.getElementById('card-number').value.trim();
-      const exp = document.getElementById('card-exp').value.trim();
-      const cvc = document.getElementById('card-cvc').value.trim();
-      const post = document.getElementById('billing-post').value.trim();
-      if(!name||!number||!exp||!cvc||!post){ alert('Veuillez remplir tous les champs.'); return; }
-      document.getElementById('checkout-form').reset();
-      saveOrder(cart);
-    });
+    const totValue = document.createElement('div');
+    totValue.textContent = formatPrice(total);
 
-    cancelPayBtn.addEventListener('click',()=>{checkoutWrap.style.display='none';});
-    overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
-    document.addEventListener('keydown',e=>{if(e.key==='Escape' && overlay.style.display==='flex')closeModal();});
+    totalRow.appendChild(totLabel);
+    totalRow.appendChild(totValue);
 
+    cartContents.innerHTML = '';
+    cartContents.appendChild(list);
+    cartContents.appendChild(totalRow);
+
+    checkoutBtn.disabled = false;
+  }
+
+  function openModal() {
+    overlay.style.display = 'flex';
+    overlay.setAttribute('aria-hidden', 'false');
     renderCart();
-  })();
+  }
+
+  function closeModal() {
+    overlay.style.display = 'none';
+    overlay.setAttribute('aria-hidden', 'true');
+    checkoutWrap.style.display = 'none';
+  }
+
+  // Ajout au panier
+  document.querySelectorAll('.buy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.name || btn.getAttribute('data-name');
+      const price = Number(btn.dataset.price || btn.getAttribute('data-price') || 0);
+      if (!name) return;
+
+      const existing = cart.find(i => i.name === name && i.price === price);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ name, price, qty: 1 });
+      }
+
+      const prev = btn.textContent;
+      btn.textContent = 'Ajouté ✓';
+      setTimeout(() => btn.textContent = prev, 900);
+    });
+  });
+
+  // Ouverture du panier
+  document.querySelectorAll('[data-view-cart]').forEach(b => {
+    b.addEventListener('click', openModal);
+  });
+
+  viewCollectionBtn.addEventListener('click', () => {
+    document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  closeModalBtn.addEventListener('click', closeModal);
+
+  checkoutBtn.addEventListener('click', () => {
+    checkoutWrap.style.display = 'block';
+    const first = document.getElementById('card-name');
+    if (first) first.focus();
+  });
+
+  // Paiement et enregistrement sur Supabase
+  payBtn.addEventListener('click', async () => {
+    const name = document.getElementById('card-name').value.trim();
+    const email = document.getElementById('billing-post').value.trim(); // ou crée un champ email dédié
+
+    if (!name || !email || cart.length === 0) {
+      alert('Veuillez remplir tous les champs et avoir au moins un produit.');
+      return;
+    }
+
+    await saveOrder(name, email, cart);
+
+    // Vider le panier
+    cart.length = 0;
+    renderCart();
+    checkoutWrap.style.display = 'none';
+    closeModal();
+  });
+
+  cancelPayBtn.addEventListener('click', () => {
+    checkoutWrap.style.display = 'none';
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.style.display === 'flex') closeModal();
+    if (e.key.toLowerCase() === 'p' && !e.metaKey && !e.ctrlKey) openModal();
+  });
+
+  // Initial render
+  renderCart();
 </script>
-</body>
-</html>
